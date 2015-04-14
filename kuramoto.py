@@ -1,17 +1,26 @@
 #!/usr/bin/env python
 
 # Array manipulation
-from numpy import append, asarray, empty, tile
+from numpy import append, asarray, empty, ones, tile
+
+from numbers import Number
 
 # Mathematical
 from numpy import abs, angle, imag, real
-from numpy import cos, exp, mean, mod, pi, sin, sum
+from numpy import cos, dot, exp, mean, mod, pi, sin, sum
 from numpy.random import normal, uniform
 
 class Kuramoto:
     def __init__(self, size, coupling, stepsize, phases=None, nat_frequencies=None, stepcount=0):
         self.size = size
-        self.coupling = coupling # uniform coupling
+
+        if isinstance(coupling, Number): # Uniform coupling
+            self.coupling = ones(size)*coupling
+        else:
+            self.coupling = asarray(coupling)
+
+        if self.coupling.size != size:
+            raise ValueError("Not enough coupling strengths for every oscillator in the network.")
 
         if phases is None:
             self.phases = uniform(0, 2*pi, size)
@@ -35,7 +44,8 @@ class Kuramoto:
     def make_step(self, update=True):
 # First order explicit forward Euler for now
         tiled = tile(self.phases, (self.size, 1))
-        k1 = self.coupling * sum(sin(self.phases - tiled.T), axis=1)
+        #k1 = self.coupling * sum(sin(self.phases - tiled.T), axis=1)
+        k1 = dot(sin(self.phases - tiled.T), self.coupling)
         if update:
             self.phases += self.stepsize * (self.nat_frequencies + k1)
             self.phases = mod(self.phases, 2*pi)
@@ -47,7 +57,8 @@ class Kuramoto:
 # First order explicit forward Euler using explicit, slow loops
         k1 = empty(self.size)
         for i in range(0, self.size):
-            k1[i] = self.coupling * sum(sin(self.phases - self.phases[i]))
+            #k1[i] = self.coupling * sum(sin(self.phases - self.phases[i]))
+            k1[i] = dot(sin(self.phases - self.phases[i]), self.coupling)
 
         if update:
             self.phases += self.stepsize * (self.nat_frequencies + k1)
