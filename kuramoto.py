@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 # Array manipulation
 from numpy import append, asarray, empty, tile
 
