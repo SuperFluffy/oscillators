@@ -51,6 +51,8 @@ class Kuramoto:
         k1 = dot(sin(self.phases - tiled.T), self.coupling)
         if update:
             self.phases += self.stepsize * (self.nat_frequencies + k1)
+
+# The modulo operation is strictly speaking not necessary; remove for a speedup.
             self.phases = mod(self.phases, 2*pi)
             self.stepcount += 1
         else:
@@ -65,6 +67,8 @@ class Kuramoto:
 
         if update:
             self.phases += self.stepsize * (self.nat_frequencies + k1)
+
+# The modulo operation is strictly speaking not necessary; remove for a speedup.
             self.phases = mod(self.phases, 2*pi)
             self.stepcount += 1
         else:
