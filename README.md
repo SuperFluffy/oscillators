@@ -14,7 +14,7 @@ some simple codes to simulate them. This repository is meant to organize my own
 workflow, and I hope that somebody looking into coupled oscillator networks
 might find them useful as well.
 
-Types of oscillators:
+A few different types of oscillators:
 * Kuramoto
 * Wilson-Cowan
 * van-der-Poel
