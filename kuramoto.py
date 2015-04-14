@@ -10,6 +10,9 @@ from numpy import abs, angle, imag, real
 from numpy import cos, dot, exp, mean, mod, pi, sin, sum
 from numpy.random import normal, uniform
 
+# Plotting
+import matplotlib.pyplot as pyplot
+
 class Kuramoto:
     def __init__(self, size, coupling, stepsize, phases=None, nat_frequencies=None, stepcount=0):
         self.size = size
@@ -94,4 +97,4 @@ model = Kuramoto(N, J/N, dt)
 order_parameters = run(model, steps)
 pyplot.plot(range(steps), order_parameters[0,:])
 #pyplot.plot(range(steps), order_parameters[1,:])
-#pyplot.show()
+pyplot.show()
